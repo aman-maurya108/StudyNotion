@@ -20,9 +20,9 @@ const OTPSchema= new mongoose.Schema({
 });
 
 // a funcion to send mail
-async function sendverificationEmail(email,otp){
+async function sendVerificationEmail(email,otp){
     try{
-        const mailResponse = await mailSender(email,"Verification email from StudyNotion",otp);
+        const mailResponse = await mailSender(email,"Verification email from GyanVerse",otp);
         console.log("Email sent successfully",mailResponse);
     }
     catch(error){
@@ -32,7 +32,7 @@ async function sendverificationEmail(email,otp){
 }
 
 OTPSchema.pre("save", async function(next){
-    await sendverificationEmail(this.email,this.otp);
+    await sendVerificationEmail(this.email,this.otp);
     next();
 })
 

@@ -3,6 +3,9 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const OTP = require("../models/OTP");
 const otpGenerator = require("otp-generator");
+const Profile = require("../models/Profile");
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
 require("dotenv").config();
 
 //send OTP
@@ -32,8 +35,8 @@ exports.sendOTP = async(req,res) => {
     //check unique otp or not
     const result = await OTP.findOne({otp : otp});
 
-    while(result){
-        otp = otpGenerator(6,{
+    while(result){ 
+        otp = otpGenerator(6,{ 
             upperCaseAlphabates : false,
             lowerCaseAlphabates : false,
             specialChars : false,
@@ -111,7 +114,7 @@ exports.signUp = async(req,res) =>{
                 success: false,
                 message: 'OTP not found',
             })
-        } else if(otp !== recentOtp.otp){
+        } else if(otp !== recentOtp[0].otp){
             // invalid otp
             return res.status(400).json({
                 success : false,

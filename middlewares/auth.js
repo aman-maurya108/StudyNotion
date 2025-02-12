@@ -6,7 +6,8 @@ require("dotenv").config();
 exports.auth = (req,res,next) =>{
    try{
               
-       const token =  req.header("Authorization").replace("Bearer ","") || req.body.token || req.cookies.token ;
+    const token = req.header("Authorization")?.replace("Bearer ", "") || req.body.token || req.cookies.token;
+
 
        if(!token){
            return res.status(400).json({
@@ -61,7 +62,7 @@ exports.isStudent = (req,res,next) =>{
 
 //is Instructor
 
-exports.isStudent = (req,res,next) =>{
+exports.isInstructor = (req,res,next) =>{
     try{
         if(req.user.accountType != "Instructor"){
             return res.status(401).json({
@@ -83,7 +84,7 @@ exports.isStudent = (req,res,next) =>{
 //is admin
 exports.isAdmin = (req,res,next) =>{
    try{
-       if(req.user.role != "Admin"){
+       if(req.user.accountType != "Admin"){
            return res.status(401).json({
                success : false,
                message : 'This is protected route for admin.',
